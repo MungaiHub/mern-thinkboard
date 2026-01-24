@@ -20,7 +20,6 @@ app.use("/api/notes", notesRoutes);
 app.listen(5001, () => {
   console.log("server started on the PORT: 5001");
 
-  console.log(process.env.UPSTASH_REDIS_REST_URL);
-console.log(process.env.UPSTASH_REDIS_REST_TOKEN);
+
 
 });

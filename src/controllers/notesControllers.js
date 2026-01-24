@@ -1,4 +1,5 @@
 import Note from "../models/Note.js";
+import mongoose from "mongoose";
 
 export async function getAllNotes(req, res){
     try{
@@ -11,7 +12,13 @@ export async function getAllNotes(req, res){
     }
 }
 export async function getNoteById(req,res){
-    try{const note = await Note.findById(req.params.id);
+    try{
+        // Validate ObjectId format
+        if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+            return res.status(404).json({message:"Note not found"});
+        }
+        
+        const note = await Note.findById(req.params.id);
         if(!note) return res.status(404).json({message:"Note not found"});
         res.json(note);
     }
@@ -36,6 +43,11 @@ export async function createNote(req, res){
 }
 export async function updateNote(req, res) {
   try {
+    // Validate ObjectId format
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(404).json({ message: "Note not found" });
+    }
+
     const { title, content } = req.body;
 
     const updatedNote = await Note.findByIdAndUpdate(
@@ -61,6 +73,11 @@ export async function updateNote(req, res) {
 
 export async function deleteNote(req, res){
    try{
+    // Validate ObjectId format
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(404).json({ message: "Note not found" });
+    }
+    
     const deletedNote = await Note.findByIdAndDelete(req.params.id);
     if(!deletedNote) return res.status(404).json({ message: "Note not found" });
     res.status(200).json({message:"Note deleted successfully!!!"}) 
