@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 
 export async function getAllNotes(req, res){
     try{
-        const notes = (await Note.find()).toSorted({createdAt: -1});
+        const notes = await Note.find().sort({createdAt: -1});
         res.status(200).json(notes);
     }
     catch (error){
