@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "dev": "cd frontend && npm run dev"
+  },
+  "devDependencies": {
+    "daisyui": "^4.12.24"
+  }
+}
