@@ -25,7 +25,7 @@ app.use(cors({
   },
   credentials: true,
 }));
-app. use(express.json());
+app.use(express.json());
 app.use(rateLimiter);
 app.use("/api/notes", notesRoutes);
 

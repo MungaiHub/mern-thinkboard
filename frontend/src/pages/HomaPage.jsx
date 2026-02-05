@@ -5,6 +5,8 @@ import RateLimitedUI from '../components/RateLimitedUI'
 import NoteCard from '../components/NoteCard'
 import axios from 'axios'
 import toast from "react-hot-toast"
+import api from '../lib/axios'
+import NotesNotFound from '../components/NotesNotFound'  
 
 const HomaPage = () => {
   const [isRateLimited, setIsRateLimited] = useState(false)
@@ -14,7 +16,7 @@ const HomaPage = () => {
   useEffect(()=> {
     const fetchNotes = async () => {
       try{
-        const res = await axios.get("http://localhost:5001/api/notes")
+        const res = await api.get("/notes")
         const data = res.data
         setNotes(Array.isArray(data) ? data : [])
         setIsRateLimited(false)
@@ -46,20 +48,19 @@ const HomaPage = () => {
       <div className="max-w-6xl mx-auto p-4 mt-6">
         {loading && <div className='text-center text-primary py-10'>loading notes....</div>}
 
+        {!loading && !isRateLimited && notes.length === 0 && (
+          <NotesNotFound />
+        )}
+
         {!loading && !isRateLimited && notes.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {notes.map(note =>(
-               <NoteCard key={note._id} note={note}/>
+               <NoteCard key={note._id} note={note} setNotes={setNotes}/>
             ))}
           </div>
         )}
 
-        {!loading && !isRateLimited && notes.length === 0 && (
-          <div className="text-center py-16">
-            <p className="text-xl text-base-content/80 mb-4">No notes yet.</p>
-            <Link to="/create" className="btn btn-primary">Create your first note</Link>
-          </div>
-        )}
+        
       </div>
     </div>
   )

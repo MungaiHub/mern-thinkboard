@@ -2,6 +2,7 @@ import { ArrowLeftIcon } from 'lucide-react'
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import api from '../lib/axios'  
 import toast from 'react-hot-toast'
 
 const CreatePage = () => {
@@ -14,23 +15,30 @@ const CreatePage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
 
-    if (!title.trim() || !content.trim()) {
-      toast.error("All fields are required")
-      return
-    }
+    // if (!title.trim() || !content.trim()) {
+    //   toast.error("All fields are required")
+    //   return
+    // }
 
     setLoading(true)
     try {
-      await axios.post("http://localhost:5001/api/notes", { title, content })
+      await api.post("/notes", { title, content })
       toast.success("Note created successfully")
       navigate("/")
     } catch (error) {
       console.error("Error creating note:", error)
-      toast.error(error.response?.data?.message || "Failed to create note")
+      if (error.response && error.response.status === 429) {
+        toast.error(
+          "You are creating notes too quickly. Please wait a moment and try again.",
+          { duration: 4000 }
+        )
+      } else {
+        toast.error("Failed to create note. Please try again.")
+      }
     } finally {
       setLoading(false)
     }
-  }
+}
 
   return (
     <div className='min-h-screen bg-base-200'>
