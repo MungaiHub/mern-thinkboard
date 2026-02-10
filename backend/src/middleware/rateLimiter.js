@@ -1,6 +1,12 @@
 import ratelimit from "../config/upstash.js"
 
 const rateLimiter = async (req, res, next) => {
+  // If Upstash env vars aren't configured (common on first deploy),
+  // don't block the whole API.
+  if (!process.env.UPSTASH_REDIS_REST_URL || !process.env.UPSTASH_REDIS_REST_TOKEN) {
+    return next();
+  }
+
   // Per-client identifier (IP) so limit is per user, not global
   const identifier = req.ip || req.headers["x-forwarded-for"] || "anonymous";
 

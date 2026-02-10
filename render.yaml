@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: mern-thinkboard
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      # Set these in Render dashboard (no secrets in git):
+      # - MONGO_URL
+      # - UPSTASH_REDIS_REST_URL
+      # - UPSTASH_REDIS_REST_TOKEN

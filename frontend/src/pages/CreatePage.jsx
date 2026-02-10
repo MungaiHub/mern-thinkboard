@@ -1,7 +1,6 @@
 import { ArrowLeftIcon } from 'lucide-react'
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import axios from 'axios'
 import api from '../lib/axios'  
 import toast from 'react-hot-toast'
 
@@ -38,7 +37,7 @@ const CreatePage = () => {
     } finally {
       setLoading(false)
     }
-}
+  }
 
   return (
     <div className='min-h-screen bg-base-200'>
